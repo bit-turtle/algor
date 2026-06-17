@@ -1,3 +1,3 @@
 # algor
 
-A library with some useful algorithms written in C++
+A library with some useful algorithms written in C
