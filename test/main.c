@@ -28,5 +28,6 @@ int main() {
 	binary();
 	search();
 	heap();
-	printf("%u of %u tests passed\n", successes, total);	
+	printf("%u of %u tests passed\n", successes, total);
+	return total - successes;
 }
