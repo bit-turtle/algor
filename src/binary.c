@@ -17,6 +17,7 @@ struct algor_tree* algor_create_root(unsigned capacity, void* value) {
 	tree->nodes[ALGOR_ROOT] = value;
 	tree->compare = NULL;
 	tree->free = NULL;
+	tree->string = NULL;
 	return tree;
 }
 // Constructor from an array
@@ -26,6 +27,7 @@ struct algor_tree* algor_create_tree(unsigned nodes, void** values) {
 		return NULL;
 	tree->capacity = nodes;
 	tree->compare = NULL;
+	tree->string = NULL;
 	tree->free = NULL;
 	while (nodes-- > 0)
 		tree->nodes[nodes] = values[nodes];
@@ -88,7 +90,7 @@ char* algor_node_string(struct algor_tree* tree, algor_node node) {
 	if (tree->string != NULL)
 		return tree->string(tree->nodes[node]);
 	uintptr_t pointer = (uintptr_t)tree->nodes[node];
-	char* hex = (char*)malloc(sizeof(pointer)*2+2);
+	char* hex = (char*)malloc(sizeof(pointer)*2+2+1);
 	hex[0] = '0';
 	hex[1] = 'x';
 	for (int i = 0; i < sizeof(pointer)*2; i++) {
@@ -98,6 +100,7 @@ char* algor_node_string(struct algor_tree* tree, algor_node node) {
 		else
 			hex[i+2] = '0' + digit;
 	}
+	hex[sizeof(pointer)+3] = '\0';
 	return hex;
 }
 
