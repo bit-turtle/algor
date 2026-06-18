@@ -1,6 +1,9 @@
 // Binary Tree Implementation
 
 #include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 #include <algor/tree/binary.h>
 
 // Constructor
@@ -72,6 +75,48 @@ void algor_set_node(struct algor_tree* tree, algor_node node, void* value) {
 	tree->nodes[node] = value;
 }
 
+// To String
+char* algor_node_string(struct algor_tree* tree, algor_node node) {
+	if (node >= tree->capacity || tree->nodes[node] == NULL) {
+		char* null = (char*)malloc(4);
+		null[0] = 'N';
+		null[1] = 'U';
+		null[2] = 'L';
+		null[3] = 'L';
+		return null;
+	}
+	if (tree->string != NULL)
+		return tree->string(tree->nodes[node]);
+	uintptr_t pointer = (uintptr_t)tree->nodes[node];
+	char* hex = (char*)malloc(sizeof(pointer)*2+2);
+	hex[0] = '0';
+	hex[1] = 'x';
+	for (int i = 0; i < sizeof(pointer)*2; i++) {
+		char digit = (pointer>>((sizeof(pointer)*2-i)*4))&0xf;
+		if (digit > 9)
+			hex[i+2] = 'A' + digit-10;
+		else
+			hex[i+2] = '0' + digit;
+	}
+	return hex;
+}
+
+void algor_tree_print(struct algor_tree* tree, algor_node node) {
+	char* value = algor_node_string(tree, node);
+	printf("%s", value);
+	free(value);
+	if (algor_node_left(tree, node)) {
+		printf("(");
+		algor_tree_print(tree, algor_left_node(node));
+		printf(")");
+	}
+	if (algor_node_right(tree, node)) {
+		printf("[");
+		algor_tree_print(tree, algor_right_node(node));
+		printf("]");
+	}
+}
+
 // References
 algor_node algor_left_node(algor_node node) {
 	return 2*node+1;
@@ -91,8 +136,12 @@ bool algor_node_full(struct algor_tree* tree, algor_node node) {
 	return algor_node_left(tree, node) && algor_node_right(tree, node);
 }
 bool algor_node_left(struct algor_tree* tree, algor_node node) {
+	if (algor_left_node(node) >= tree->capacity)
+		return false;
 	return tree->nodes[algor_left_node(node)] != NULL;
 }
 bool algor_node_right(struct algor_tree* tree, algor_node node) {
+	if (algor_right_node(node) >= tree->capacity)
+		return false;
 	return tree->nodes[algor_right_node(node)] != NULL;
 }

@@ -46,11 +46,16 @@ void algor_bst_remove(struct algor_tree* tree, algor_node node) {
 // Find Node in BST
 algor_node algor_bst_find(struct algor_tree* tree, void* value) {
 	algor_node node = ALGOR_ROOT;
-	while (!algor_node_leaf(tree, node)) {
+	while (node < tree->capacity) {
 		if (algor_compare_node(tree, node, value))
 			node = algor_left_node(node);
-		else
+		else if (tree->compare(value, tree->nodes[node]))
 			node = algor_right_node(node);
+		else
+			break;
 	}
+	if (node >= tree->capacity)
+		return tree->capacity;
+
 	return node;
 }

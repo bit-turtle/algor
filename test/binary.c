@@ -2,6 +2,7 @@
 
 #include "test.h"
 
+#include <string.h>
 #include <algor/tree/binary.h>
 
 bool constructor() {
@@ -22,7 +23,32 @@ bool arrayconstructor() {
 	return success;
 }
 
+bool stringnodetest() {
+	struct algor_tree* tree = algor_create_root(1, newint(4));
+	char* hexnode = algor_node_string(tree, ALGOR_ROOT);
+	tree->string = stringint;
+	char* intnode = algor_node_string(tree, ALGOR_ROOT);
+	bool success = hexnode[0] == '0' && hexnode[1] == 'x' && intnode[0] == '4' && intnode[1] == '\0';
+	algor_free_tree(tree);
+	free(hexnode);
+	free(intnode);
+	return success;
+}
+
+bool stringtreetest() {
+	int* array[] = { newint(5), newint(2), newint(9), newint(3), NULL, NULL, newint(100) };
+	struct algor_tree* tree = algor_create_tree(7, (void**)array);
+	tree->string = stringint;
+	algor_tree_print(tree, ALGOR_ROOT);
+	printf("\n");
+	bool success = true;
+	algor_free_tree(tree);
+	return success;
+}
+
 void binary() {
 	test("Tree Constructor", constructor());
 	test("Tree Array Constructor", arrayconstructor());
+	test("Node String", stringnodetest());
+	test("Tree String", stringtreetest());
 }

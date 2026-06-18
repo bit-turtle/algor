@@ -6,6 +6,7 @@
 
 void* newint(int z);
 bool compareint(void* a, void* b);
+char* stringint(void* z);
 void test(const char* name, bool passed);
 
 // Tests

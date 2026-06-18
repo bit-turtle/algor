@@ -12,6 +12,8 @@ typedef unsigned algor_node;
 // Tree Structure
 struct algor_tree {
 	// User provided functions
+	// To string, memory will be freed by algor
+	char* (*string)(void*);
 	// Comparison, should be true if A > B, default is to compare pointers
 	bool (*compare)(void*, void*);
 	// Free, default is to just call stdlib free on all values
@@ -39,6 +41,10 @@ bool algor_compare_node(struct algor_tree* tree, algor_node node, void* value);
 
 // Set Node
 void algor_set_node(struct algor_tree* tree, algor_node node, void* value);
+
+// To String
+char* algor_node_string(struct algor_tree* tree, algor_node node);
+void algor_tree_print(struct algor_tree* tree, algor_node root);
 
 // References
 algor_node algor_left_node(algor_node node);

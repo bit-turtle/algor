@@ -17,6 +17,12 @@ bool compareint(void* a, void* b) {
 	return *(int*)a > *(int*)b;
 }
 
+char* stringint(void* z) {
+	char* number = (char*)malloc(20);
+	snprintf(number, 20, "%d", *(int*)z);
+	return number;
+}
+
 void test(const char* name, bool passed) {
 	printf("%s test %s\n", name, passed ? "PASSED" : "FAILED");
 	total++;
