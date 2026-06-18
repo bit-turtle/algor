@@ -13,10 +13,10 @@ struct algor_tree* algor_bst_create(unsigned capacity, bool (*compare)(void*, vo
 void algor_bst_add(struct algor_tree* tree, void* value) {
 	algor_node node = ALGOR_ROOT;
 	while (tree->nodes[node] != NULL) {
-		if (tree->compare(value, tree->nodes[node]))
-			node = algor_right_node(node);
-		else
+		if (algor_compare_node(tree, node, value))
 			node = algor_left_node(node);
+		else
+			node = algor_right_node(node);
 	}
 	tree->nodes[node] = value;
 }
@@ -46,16 +46,17 @@ void algor_bst_remove(struct algor_tree* tree, algor_node node) {
 // Find Node in BST
 algor_node algor_bst_find(struct algor_tree* tree, void* value) {
 	algor_node node = ALGOR_ROOT;
-	while (node < tree->capacity) {
-		if (algor_compare_node(tree, node, value))
-			node = algor_left_node(node);
-		else if (tree->compare(value, tree->nodes[node]))
+	if (tree->nodes[node] == NULL)
+		return tree->capacity;
+	while (tree->compare(tree->nodes[node], value) || tree->compare(value, tree->nodes[node])) {
+		if (tree->compare(value, tree->nodes[node]))
 			node = algor_right_node(node);
 		else
-			break;
+			node = algor_left_node(node);
+		if (node > tree->capacity)
+			return tree->capacity;
+		if (tree->nodes[node] == NULL)
+			return tree->capacity;
 	}
-	if (node >= tree->capacity)
-		return tree->capacity;
-
 	return node;
 }

@@ -12,7 +12,7 @@ struct algor_tree* algor_create_root(unsigned capacity, void* value) {
 	if (tree == NULL)	// Out of memory
 		return NULL;
 	for (int i = 0; i < capacity; i++)
-		tree->nodes[i] = 0;
+		tree->nodes[i] = NULL;
 	tree->capacity = capacity;
 	tree->nodes[ALGOR_ROOT] = value;
 	tree->compare = NULL;
